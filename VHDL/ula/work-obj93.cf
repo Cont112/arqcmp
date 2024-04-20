@@ -1,0 +1,13 @@
+v 4
+file . "ula.vhd" "279e5a2e746ed5ae0d6ee2346048b51291321a77" "20240417163248.998":
+  entity ula at 1( 0) + 0 on 79;
+  architecture a_ula of ula at 14( 319) + 0 on 80;
+file . "soma_e_subtrai.vhd" "9c07e873f05826013873744b37fa5c78343796b6" "20240412192825.901":
+  entity soma_e_subtrai at 1( 0) + 0 on 11;
+  architecture a_soma_e_subtrai of soma_e_subtrai at 13( 257) + 0 on 12;
+file . "ula_tb.vhd" "b90b021246ea3dbb152d80214aaca7ef1d32e5d8" "20240417164030.522":
+  entity ula_tb at 1( 0) + 0 on 85;
+  architecture a_ula_tb of ula_tb at 10( 102) + 0 on 86;
+file . "aritmetica.vhd" "b473230c61fdd1bd39f969eae004872629d267eb" "20240417163239.434":
+  entity aritmetica at 1( 0) + 0 on 77;
+  architecture a_aritmetica of aritmetica at 13( 283) + 0 on 78;
