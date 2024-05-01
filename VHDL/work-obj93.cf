@@ -1,0 +1,4 @@
+v 4
+file . "bank8reg/bank8reg_tb.vhd" "9a363af6cf14143a0f870d0621341921e1b0b449" "20240501015024.522":
+  entity bank8reg_tb at 1( 0) + 0 on 11;
+  architecture a_bank8reg_tb of bank8reg_tb at 10( 108) + 0 on 12;

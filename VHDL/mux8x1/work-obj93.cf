@@ -1,7 +1,0 @@
-v 4
-file . "mux8x1_tb.vhd" "e50bf2897600cb6531d6b433f45934b3c36e390d" "20240412184403.118":
-  entity mux8x1_tb at 1( 0) + 0 on 13;
-  architecture a_mux8x1_tb of mux8x1_tb at 7( 70) + 0 on 14;
-file . "mux8x1.vhd" "331242b0bbe2adf88a5aa476bcb264e542570a34" "20240412182759.590":
-  entity mux8x1 at 1( 0) + 0 on 11;
-  architecture a_mux8x1 of mux8x1 at 12( 273) + 0 on 12;
