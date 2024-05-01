@@ -61,13 +61,46 @@ architecture a_microprocessor_tb of microprocessor_tb is
         process
         begin
           wait for 200 ns;
-            wr_en <= '1';
+            wr_en <= '1';           -- addi x1, x0, 22
             ula_op_sel <= "000"; -- SOMAR
             reg_write <= "001"; --NO REG 1
-            reg_a <= "000"; -- O ZERO
+            reg_a <= "000"; -- xZer
             imediato <= "0000000000010101"; --IMEDIATO
-            im_sel <= '1';
-            wait for 200 ns;
+            im_sel <= '1'; --addi
+
+            wait for 100 ns;
+            ula_op_sel <= "000"; -- addi x2, x0, 8
+            reg_write <= "010"; --x2
+            reg_a <= "000"; --xZero
+            imediato <= "0000000000001001"; -- IMEDIATO
+            im_sel <= '1'; --addi
+
+            wait for 100 ns;
+            ula_op_sel <= "000"; -- add x3, x1, x2
+            reg_write <= "011"; --  x3
+            reg_a <= "001"; --  x1
+            reg_b <= "010"; -- x2   
+            im_sel <= '0';  -- soma sem imediato
+
+            wait for 100 ns;
+            wr_en <= '0';
+            ula_op_sel <= "001"; -- COMPARACAO: A - B == 0 ? sem escrever em nenhum registrador de destino
+            reg_a <= "001";--       nesse caso vai fazer 21 - 9, a flag zero vai ser falsa e nao vai escrever o resultado
+            reg_b <= "010";
+            im_sel <= '0';
+            wait for 100 ns;
+            wr_en <= '1';
+            ula_op_sel <= "000"; -- add x4,x1,zer0
+            reg_write <= "100";
+            reg_a <= "001";
+            reg_b <= "000";
+            im_sel <= '0';
+            wait for 100 ns;
+            wr_en <= '0';
+            ula_op_sel <= "001";    --COMPARACAO x4 com x1, resultado vai aparecer na flag zero da ula e nao vai ser escrito.
+            reg_a <= "100";
+            reg_b <= "001";
+            im_sel <= '0';
           wait;
         end process;
 
