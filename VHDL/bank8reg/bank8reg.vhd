@@ -5,7 +5,7 @@ use ieee.numeric_std.all;
 entity bank8reg is
     port(read_register1 : in unsigned(2 downto 0);
          read_register2 : in unsigned(2 downto 0);
-         write_register : in unsigned(2 downto 0); -- SELECIONAR O REGISTRADOR QSERA ESCRITO
+         write_register : in unsigned(2 downto 0);
          write_data     : in unsigned(15 downto 0);
          read_data1     : out unsigned(15 downto 0);
          read_data2     : out unsigned(15 downto 0);
@@ -66,6 +66,7 @@ architecture a_bank8reg of bank8reg is
             sel =>write_register , saida0 => wr_sel_0,saida1 => wr_sel_1, saida2 => wr_sel_2,saida3 => wr_sel_3,
             saida4 => wr_sel_4, saida5 => wr_sel_5, saida6 => wr_sel_6, saida7 => wr_sel_7);
 
+
         wr_en_0 <= wr_sel_0 and wr_en;
         wr_en_1 <= wr_sel_1 and wr_en;
         wr_en_2 <= wr_sel_2 and wr_en;
@@ -74,9 +75,10 @@ architecture a_bank8reg of bank8reg is
         wr_en_5 <= wr_sel_5 and wr_en;
         wr_en_6 <= wr_sel_6 and wr_en;
         wr_en_7 <= wr_sel_7 and wr_en;
+    
 
         reg0: reg16bits port map(
-            clk=>clk, rst=>rst, wr_en=>wr_en_0,data_in=>write_data, data_out=>data_out_0);
+            clk=>'0', rst=>'1', wr_en=>'0',data_in=>"0000000000000000", data_out=>data_out_0);
         reg1: reg16bits port map(
             clk=>clk, rst=>rst, wr_en=>wr_en_1,data_in=>write_data, data_out=>data_out_1);
         reg2: reg16bits port map(
@@ -92,6 +94,5 @@ architecture a_bank8reg of bank8reg is
         reg7: reg16bits port map(
             clk=>clk, rst=>rst, wr_en=>wr_en_7,data_in=>write_data, data_out=>data_out_7);
         
-
 
 end architecture;

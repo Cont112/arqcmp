@@ -1,4 +1,8 @@
 #!/bin/sh
+
+ghdl -a mux1x2/mux1x2.vhd
+ghdl -e mux1x2
+
 ghdl -a decoder2x4/decoder2x4.vhd
 ghdl -e decoder2x4
 
@@ -31,3 +35,12 @@ ghdl -e reg16bits
 
 ghdl -a bank8reg/bank8reg.vhd
 ghdl -e bank8reg
+
+ghdl -a bank8reg/bank8reg_tb.vhd
+ghdl -e bank8reg_tb
+
+ghdl -a microprocessor.vhd
+ghdl -e microprocessor
+
+ghdl -a microprocessor_tb.vhd
+ghdl -e microprocessor_tb
