@@ -33,16 +33,13 @@ ghdl -e ula
 ghdl -a maq_estados/maq_estados.vhd
 ghdl -e maq_estados
 
-ghdl -a maq_estados/maq_estados_tb.vhd
-ghdl -e maq_estados_tb
-
 ghdl -a mux8x1/mux8x1.vhd
 ghdl -e mux8x1
 
 ghdl -a demux1x8/demux1x8.vhd
 ghdl -e demux1x8
 
-ghdl -a pc/un_controle.vhd
+ghdl -a un_controle/un_controle.vhd
 ghdl -e un_controle
 
 ghdl -a rom/rom.vhd
@@ -57,14 +54,8 @@ ghdl -e bank8reg
 ghdl -a bank8reg/bank8reg_tb.vhd
 ghdl -e bank8reg_tb
 
-ghdl -a microprocessor.vhd
-ghdl -e microprocessor
+ghdl -a processador.vhd
+ghdl -e processador
 
-ghdl -a microprocessor_tb.vhd
-ghdl -e microprocessor_tb
-
-ghdl -a pc/pc_toplevel.vhd
-ghdl -e pc_toplevel
-
-ghdl -a pc/pc_toplevel_tb.vhd
-ghdl -e pc_toplevel_tb
+ghdl -a processador_tb.vhd
+ghdl -e processador_tb
