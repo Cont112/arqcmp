@@ -1,7 +1,0 @@
-v 4
-file . "detector_paridade_tb.vhd" "9d7b5213f4d099dd5e71da6d3851d88caa4c7ec2" "20240405184941.821":
-  entity detector_paridade_tb at 1( 0) + 0 on 13;
-  architecture a_detector_paridade_tb of detector_paridade_tb at 7( 81) + 0 on 14;
-file . "detector_paridade.vhd" "54f8e826a4eea06121c542acf19a3afd531eaaaf" "20240405184904.411":
-  entity detector_paridade at 1( 0) + 0 on 11;
-  architecture a_detector_paridade of detector_paridade at 11( 207) + 0 on 12;

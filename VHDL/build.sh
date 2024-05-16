@@ -6,23 +6,11 @@ ghdl -e mux1x2
 ghdl -a decoder2x4/decoder2x4.vhd
 ghdl -e decoder2x4
 
-ghdl -a detector_paridade/detector_paridade.vhd
-ghdl -e detector_paridade
-
-ghdl -a flipflop_t/flipflop_t.vhd
-ghdl -e flipflop_t
-
-ghdl -a porta/porta.vhd
-ghdl -e porta
-
 ghdl -a reg/reg16bits.vhd
 ghdl -e reg16bits
 
 ghdl -a reg/reg7bits.vhd
 ghdl -e reg7bits
-
-ghdl -a soma_e_subtrai/soma_e_subtrai.vhd
-ghdl -e soma_e_subtrai
 
 ghdl -a ula/aritmetica.vhd
 ghdl -e ula
