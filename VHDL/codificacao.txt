@@ -1,0 +1,50 @@
+    MSB b15                b0 LSB
+        |                  |
+ADD:    01000 ddd aaa bbb XX
+        
+
+
+ADDI:   11000 ddd aaa ccccc
+
+
+
+SUB:    01001 ddd aaa bbb XX
+
+
+
+SUBI:   11001 ddd aaa ccccc
+
+
+
+XOR:    01110 ddd aaa bbb XX
+
+
+
+NOP:    00000 000 000 000 00 -> ADD X0,X0,X0 -> 0x00 (sem escrever)
+
+
+
+JUMP:   10000 iiiiiii XXXX
+
+
+
+
+Onde:
+     ddd        identifica o registrador de destino.
+     aaa        identifica o registrador fonte A.
+     bbb        identifica o registrador fonte B.
+     ccccc      identifica o imediato de 5 bits em complemento de 2.
+     iiiiiii    identifica o endereco absoluto de destino.
+     xx         irrelevante.
+
+
+
+        MSB b4    b0 LSB
+            |     |
+OPCODE:     i_w_ula
+        
+    i       identifica o seletor de imediato no mux de entrada da ula.
+    w       identifica o wr_en do banco de registradores.
+    ula     identifica a palvara de 3 bis que seleciona a operacao da ula.
+    
+    Excecoes: JUMP
