@@ -1,34 +1,34 @@
 v 4
-file . "ram/ram.vhd" "fcd70ff4556dd2538da1b7a296ea48b5cabfaed6" "20240614085900.380":
-  entity ram at 1( 0) + 0 on 721;
-  architecture a_ram of ram at 15( 463) + 0 on 722;
-file . "processador_tb.vhd" "69ca47eb59ece9dec2e9e58de6fbadef3a076d79" "20240614085900.436":
-  entity processador_tb at 1( 0) + 0 on 725;
-  architecture a_processador_tb of processador_tb at 8( 108) + 0 on 726;
-file . "bank8reg/bank8reg.vhd" "4a6f04435851c64d43c76c156b623ba7f7131272" "20240614085900.358":
-  entity bank8reg at 1( 0) + 0 on 719;
-  architecture a_bank8reg of bank8reg at 16( 433) + 0 on 720;
-file . "un_controle/un_controle.vhd" "fe8be353ccba449d096cd6ca87911451dc3211ec" "20240614085900.307":
-  entity un_controle at 1( 0) + 0 on 715;
-  architecture a_un_controle of un_controle at 32( 1205) + 0 on 716;
-file . "ula/ula.vhd" "4c26ce0726ccdf1af0f6066aff939ab2d0aa9169" "20240614085900.261":
-  entity ula at 1( 0) + 0 on 711;
-  architecture a_ula of ula at 15( 405) + 0 on 712;
-file . "reg/reg16bits.vhd" "928439c6cf5915fad5dafc2cb34efd31e9f55857" "20240614085900.208":
-  entity reg16bits at 1( 0) + 0 on 707;
-  architecture a_reg16bits of reg16bits at 14( 289) + 0 on 708;
-file . "reg/reg1bit.vhd" "e796f64c7f19cd4ad2770c66a22f718d1d2cb982" "20240614085900.171":
-  entity reg1bit at 1( 0) + 0 on 705;
-  architecture a_reg1bit of reg1bit at 14( 263) + 0 on 706;
-file . "reg/reg7bits.vhd" "45d214c739eab0fd131340f768630f0bc1a97039" "20240614085900.236":
-  entity reg7bits at 1( 0) + 0 on 709;
-  architecture a_reg7bits of reg7bits at 14( 286) + 0 on 710;
-file . "maq_estados/maq_estados.vhd" "4b713c34fc6518d8b07bf41fc27b18937831819c" "20240614085900.284":
-  entity maq_estados at 1( 0) + 0 on 713;
-  architecture a_maq_estados of maq_estados at 9( 183) + 0 on 714;
-file . "rom/rom.vhd" "ff23ee0ca19e2ced85e27a4d2811cd7882462571" "20240614085900.335":
-  entity rom at 1( 0) + 0 on 717;
-  architecture a_rom of rom at 10( 227) + 0 on 718;
-file . "processador.vhd" "a6a57b103482004b781fbdfb038cbc297554807c" "20240614085900.403":
-  entity processador at 1( 0) + 0 on 723;
-  architecture a_processador of processador at 17( 594) + 0 on 724;
+file . "processador.vhd" "a05a96d5a308b9f0fa89e4ce962ae3eaff5931ac" "20240614111054.444":
+  entity processador at 1( 0) + 0 on 1281;
+  architecture a_processador of processador at 17( 594) + 0 on 1282;
+file . "rom/rom.vhd" "ad45bb8ac9231b8c612165a4a55f308879d49bc1" "20240614111054.386":
+  entity rom at 1( 0) + 0 on 1275;
+  architecture a_rom of rom at 10( 227) + 0 on 1276;
+file . "maq_estados/maq_estados.vhd" "4b713c34fc6518d8b07bf41fc27b18937831819c" "20240614111054.348":
+  entity maq_estados at 1( 0) + 0 on 1271;
+  architecture a_maq_estados of maq_estados at 9( 183) + 0 on 1272;
+file . "reg/reg7bits.vhd" "45d214c739eab0fd131340f768630f0bc1a97039" "20240614111054.313":
+  entity reg7bits at 1( 0) + 0 on 1267;
+  architecture a_reg7bits of reg7bits at 14( 286) + 0 on 1268;
+file . "reg/reg1bit.vhd" "e796f64c7f19cd4ad2770c66a22f718d1d2cb982" "20240614111054.231":
+  entity reg1bit at 1( 0) + 0 on 1263;
+  architecture a_reg1bit of reg1bit at 14( 263) + 0 on 1264;
+file . "reg/reg16bits.vhd" "928439c6cf5915fad5dafc2cb34efd31e9f55857" "20240614111054.294":
+  entity reg16bits at 1( 0) + 0 on 1265;
+  architecture a_reg16bits of reg16bits at 14( 289) + 0 on 1266;
+file . "ula/ula.vhd" "4c26ce0726ccdf1af0f6066aff939ab2d0aa9169" "20240614111054.330":
+  entity ula at 1( 0) + 0 on 1269;
+  architecture a_ula of ula at 15( 405) + 0 on 1270;
+file . "un_controle/un_controle.vhd" "f3b799cdaec05fa53e13b8a179da0e8b0c718e10" "20240614111054.366":
+  entity un_controle at 1( 0) + 0 on 1273;
+  architecture a_un_controle of un_controle at 30( 1181) + 0 on 1274;
+file . "bank8reg/bank8reg.vhd" "4a6f04435851c64d43c76c156b623ba7f7131272" "20240614111054.404":
+  entity bank8reg at 1( 0) + 0 on 1277;
+  architecture a_bank8reg of bank8reg at 16( 433) + 0 on 1278;
+file . "processador_tb.vhd" "5cfd2e8cdaff2775115dbd72ca4236a811ea14ee" "20240614111054.468":
+  entity processador_tb at 1( 0) + 0 on 1283;
+  architecture a_processador_tb of processador_tb at 8( 108) + 0 on 1284;
+file . "ram/ram.vhd" "fcd70ff4556dd2538da1b7a296ea48b5cabfaed6" "20240614111054.426":
+  entity ram at 1( 0) + 0 on 1279;
+  architecture a_ram of ram at 15( 463) + 0 on 1280;

@@ -8,10 +8,10 @@ entity  un_controle is
         next_addr: out unsigned(6 downto 0); --Proximo endereco
 
         fetch_clk, decode_clk, execute_clk, memory_clk: out std_logic; --Sinais de controle
-        wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu: out std_logic; --Sinais de controle
+        wr_en_ram,wr_en_raddr ,wr_en_flags, wr_en_reg, wr_en_acu: out std_logic; --Sinais de controle
 
         ula_op: out unsigned(1 downto 0); --Operacao da ULA
-        ula_sel: out std_logic; --Selecao entrada da ULA (imediato ou registrador)
+        ula_sel, ram_sel: out std_logic; --Selecao entrada da ULA (imediato ou registrador)
 
         acu_sel: out unsigned(1 downto 0); --Selecao entrada do acumulador
 
@@ -20,8 +20,6 @@ entity  un_controle is
         reg_data_sel: out unsigned(1 downto 0); --Selecao dado a ser escrito no registrador (saida do acumulador, ram, imediato)
 
         imediato: out unsigned(15 downto 0); --Imediato extendido
-
-        ram_addr: out unsigned(6 downto 0);
 
         zero, carry, negative: in std_logic; --Flags
 
@@ -72,10 +70,13 @@ begin
     relative_addr <= ('0' & current_addr) + imm(7 downto 0); --Endereco relativo
     imediato <= "0000000" & imm when imm(8)='0' else "11111111" & imm when imm(8)='1'; --Extensao de sinal
     
-    ram_addr <= instruction(6 downto 0);
     --controle de escrita na memoria
     wr_en_ram <= '1' when opcode="1100" else --SW
-        '0';   
+        '0';
+
+    wr_en_raddr<= '1' when opcode="1100" else --SW
+        '1' when opcode="1101" else --LW
+        '0';
     
     --controle de escritas nos latches de flag
     wr_en_flags <= '1' when opcode="0111" else --ADD
@@ -87,7 +88,7 @@ begin
     --controle de escrita no banco de registradores
     wr_en_reg <= '1' when opcode="0010" else--MOV
         '1' when opcode="0100" else --LD
-        '1' when opcode="1100" else --LW
+        '1' when opcode="1011" else --LW
         '1' when opcode="1101" else --Lu
         '0';
 
@@ -120,15 +121,18 @@ begin
 
     reg_data_sel <= "01" when opcode="0100" else --LD
         "10" when opcode="1011" else --LW
-        "10" when opcode="1100" else --LU
         "00";
+
+    ram_sel <= '1' when estado="01" and opcode="1100" else
+        '1' when estado="01" and opcode="1101" else
+        '0';
 
     jmp_en <= '1' when opcode="0101" else --JMP
         '0';
     
     br_en <= '1' when opcode="0110" and condition="000" and zero='1' else --BEQ
-        '1' when opcode="0110" and condition="001" and (negative='1') else --BLT
-        '1' when opcode="0110" and condition="010" and negative='1' else --BGT
+        '1' when opcode="0110" and condition="001" and negative='1' else --BLT
+        '1' when opcode="0110" and condition="010" and (negative='0' and zero='0') else --BGT
         '1' when opcode="0110" and condition="011" and zero='0' else --BNE
         '0'; --JPB
 

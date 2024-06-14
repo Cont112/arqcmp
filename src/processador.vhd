@@ -69,10 +69,10 @@ architecture a_processador of processador is
         next_addr: out unsigned(6 downto 0); --Proximo endereco
 
         fetch_clk, decode_clk, execute_clk, memory_clk: out std_logic; --Sinais de controle
-        wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu: out std_logic; --Sinais de controle
+        wr_en_ram, wr_en_raddr, wr_en_flags, wr_en_reg, wr_en_acu: out std_logic; --Sinais de controle
 
         ula_op: out unsigned(1 downto 0); --Operacao da ULA
-        ula_sel: out std_logic; --Selecao entrada da ULA (imediato ou registrador)
+        ula_sel, ram_sel: out std_logic; --Selecao entrada da ULA (imediato ou registrador)
 
         acu_sel: out unsigned(1 downto 0); --Selecao entrada do acumulador
 
@@ -81,8 +81,6 @@ architecture a_processador of processador is
         reg_data_sel: out unsigned(1 downto 0); --Selecao dado a ser escrito no registrador (saida do acumulador, ram, imediato)
 
         imediato: out unsigned(15 downto 0); --Imediato extendido
-
-        ram_addr: out unsigned(6 downto 0);
 
         zero, carry, negative: in std_logic; --Flags
 
@@ -115,7 +113,7 @@ architecture a_processador of processador is
 
     --Unidade de Controle
     signal fetch_clk, decode_clk, execute_clk, memory_clk : std_logic;
-    signal wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu : std_logic;
+    signal wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu, wr_en_raddr: std_logic;
     signal ula_sel: std_logic;
     signal reg_data_sel, ula_op, acu_sel : unsigned(1 downto 0);
     signal reg_wr : unsigned(2 downto 0);
@@ -132,8 +130,8 @@ architecture a_processador of processador is
 
     --Ram
     signal ram_data : unsigned(15 downto 0);
-    signal ram_addr: unsigned(6 downto 0 );
-
+    signal ram_addr: unsigned(15 downto 0 );
+    signal ram_sel : std_logic;
     --Banco de Registradores
     signal data_in, data_out : unsigned(15 downto 0);
     signal read_reg : unsigned(2 downto 0);
@@ -147,9 +145,11 @@ architecture a_processador of processador is
     
     begin
         --Unidade de Controle
-        uc: un_controle port map (instruction, current_addr, pc_in, fetch_clk, decode_clk, execute_clk, memory_clk,
-         wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu, ula_op, ula_sel, acu_sel, reg_wr, reg_read1, reg_read2, reg_data_sel,
-          imediato, ram_addr, zero_flag, carry_flag, negative_flag, clk, rst);
+        uc: un_controle port map (clk => clk, rst => rst, instruction => instruction, current_addr => current_addr,
+            next_addr => pc_in, fetch_clk => fetch_clk, decode_clk => decode_clk, execute_clk => execute_clk, memory_clk =>memory_clk,
+            wr_en_ram => wr_en_ram, wr_en_flags => wr_en_flags, wr_en_reg => wr_en_reg, wr_en_acu => wr_en_acu, wr_en_raddr => wr_en_raddr,
+            ula_op => ula_op, ula_sel => ula_sel, acu_sel => acu_sel, reg_wr => reg_wr, reg_read1 => reg_read1, reg_read2 => reg_read2, ram_sel => ram_sel,
+            reg_data_sel => reg_data_sel, imediato => imediato, zero =>zero_flag, carry => carry_flag, negative => negative_flag);
 
         --Flags
         zero : reg1bit port map (clk => execute_clk, rst => rst, wr_en => wr_en_flags, data_in => ula_zero, data_out => zero_flag);
@@ -164,7 +164,8 @@ architecture a_processador of processador is
         pc: reg7bits port map (clk => execute_clk, rst => rst, wr_en => '1', data_in => pc_in, data_out => current_addr);
 
         --Ram
-        ram1: ram port map (clk => memory_clk, endereco => ram_addr, wr_en => wr_en_ram, dado_in =>data_out, dado_out => ram_data);
+        raddr: reg16bits port map (clk => memory_clk,rst => rst, wr_en => wr_en_raddr, data_in => data_out , data_out => ram_addr);
+        ram1: ram port map (clk => execute_clk, wr_en=>wr_en_ram, endereco => ram_addr(6 downto 0), dado_in => data_out, dado_out => ram_data);
 
         --Banco de Registradores
         data_in <= acu_out when reg_data_sel = "00" else
@@ -172,13 +173,15 @@ architecture a_processador of processador is
             ram_data when reg_data_sel = "10" else
             "0000000000000000"; 
         
-        read_reg <= reg_read1;
-        bank: bank8reg port map (read_register => read_reg, write_register => reg_wr, write_data => data_in, read_data => data_out, clk => execute_clk, rst => rst, wr_en => wr_en_reg);
+        read_reg <= reg_read2 when ram_sel='1' else 
+        reg_read1;
+        bank: bank8reg port map (read_register => read_reg, write_register => reg_wr, write_data => data_in,
+        read_data => data_out, clk => execute_clk, rst => rst, wr_en => wr_en_reg);
 
         --Acumulador
         acu_in <= ula_saida when acu_sel = "00" else
             data_out when acu_sel = "01" else
-            imediato when acu_sel = "11" else
+            imediato when acu_sel = "10" else
             "0000000000000000";
         acu1: reg16bits port map (clk => execute_clk, rst => rst, wr_en => wr_en_acu, data_in => acu_in, data_out => acu_out);
 
