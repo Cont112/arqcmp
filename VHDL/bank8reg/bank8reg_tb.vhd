@@ -9,16 +9,14 @@ end entity;
 
 architecture a_bank8reg_tb of bank8reg_tb is
     component bank8reg is
-        port(read_register1 : in unsigned(2 downto 0);
-        read_register2 : in unsigned(2 downto 0);
-        write_register : in unsigned(2 downto 0); -- SELECIONAR O REGISTRADOR SERA ESCRITO
-        write_data     : in unsigned(15 downto 0);
-        read_data1     : out unsigned(15 downto 0);
-        read_data2     : out unsigned(15 downto 0);
-        clk            : in std_logic;
-        rst            : in std_logic;
-        wr_en          : in std_logic
-   );
+      port(read_register : in unsigned(2 downto 0);
+      write_register : in unsigned(2 downto 0);
+      write_data     : in unsigned(15 downto 0);
+      read_data     : out unsigned(15 downto 0);
+      clk            : in std_logic;
+      rst            : in std_logic;
+      wr_en          : in std_logic
+ );
     end component;
     signal read_data1, read_data2, write_data : unsigned(15 downto 0);
     signal read_register1, read_register2, write_register: unsigned(2 downto 0);

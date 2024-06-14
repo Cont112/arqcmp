@@ -33,16 +33,14 @@ architecture a_rom of rom is
 
       8 => B"0100_1000_00011110", -- Se R3<30 salta para a instrução do passo C (INSTRUCAO 2) *SALTO RELATIVO*
       -- LD A,30
-      9 => B"0010_1000_0011_0000",
-      -- SUB A,R3 (A = A - R3)
-      10 => B"0111_1111_0000_1000", -- Se R3<30 salta para a instrução do passo C (INSTRUCAO 2) *SALTO RELATIVO*
-      -- BLT Z,-8 (VOLTAR 8INSTRUÇÕES)
+      9 => B"0111_1111_0011_1001", -- Se R3<30 salta para a instrução do passo C (INSTRUCAO 2) *SALTO RELATIVO*
+      -- BLT R3,A,-7 (VOLTAR 7 INSTRUÇÕES)
 
-      11 => B"0011_1000_0100_0000", -- Copia valor de R4 para R5
+      10 => B"0011_1000_0100_0000", -- Copia valor de R4 para R5
       -- MOV A,R4 (A = R4)
-      12 => B"0011_0101_1000_0000", -- Copia valor de R4 para R5
+      11 => B"0011_0101_1000_0000", -- Copia valor de R4 para R5
       -- MOV R5,A (R5 = A)
-      13 => B"0000_0000_0000_0000", -- NOP 
+      12 => B"0000_0000_0000_0000", -- NOP 
       -- abaixo: casos omissos => (zero em todos os bits)
       others => (others=>'0')
    );
