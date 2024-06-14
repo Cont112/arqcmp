@@ -1,4 +1,4 @@
 #!/bin/sh
 
-ghdl -r processador_tb --wave=wave.ghw
+ghdl -r processador_tb  --wave=wave.ghw
 gtkwave wave.ghw

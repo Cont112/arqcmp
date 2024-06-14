@@ -12,10 +12,9 @@ entity  un_controle is
         reg_src, reg_dist: out unsigned(2 downto 0);  --Registradores de origem e destino (os dois podem ser o acumulador)
         imediato: out unsigned(15 downto 0); -- Imediato extendido
         wr_en_reg, wr_en_acu: out std_logic;
-        wr_en_flags, wr_en_ram: out std_logic;
         sel_reg: out std_logic;
         sel_acu: out unsigned(1 downto 0);
-        zero, carry, negative: in std_logic; --Flag zero e carry
+        zero, carry: in std_logic; --Flag zero e carry
         clk,rst : in std_logic --Clocks
     );
 end entity;
@@ -39,7 +38,7 @@ begin
     func4 <= instr_in(3 downto 0);
     
 
-    sel_acu <= "00" when opcode="0001" or opcode="0010" or opcode="1001" else --ADD e SUB e SUBI
+    sel_acu <= "00" when opcode="0001" or opcode="0010" or opcode="1001" else --ADD e SUB
                "01" when opcode="0011" and R1="1000" else --MOV
                "10" when opcode="0100" and R1="1000";   --LD
     
@@ -53,17 +52,8 @@ begin
     wr_en_reg <= '1' when (opcode="0100" and R1(3) = '0') or (opcode="0011"and R1(3) = '0' )else
     '0';
     
-    wr_en_flags <= '0' when opcode="0011" or opcode="0100" else --MOV, LD e depois LW, SW
-                    '1';
-            
-    wr_en_ram <= '1' when opcode="" else --LW,SW
-                 '0';
-
-    
-                 
-
     ula_op <= "00" when opcode="0001" else --SOMA
-    "01" when opcode="0010" or opcode="1001"; -- SUB,SUBI,
+    "01" when opcode="0010" or opcode="1001"or opcode="0110" or opcode="0111" or opcode="1000"; -- SUB,SUBI, CMP,, BLT, BEQ
     
     sel_ula <= '1' when opcode="1001" else -- SUBI
                '0';
@@ -83,7 +73,7 @@ begin
     reg_src <= R2 (2 downto 0);
 
     next_addr <= relative_branch(6 downto 0) when zero = '1' and opcode = "1000" else --BEQ
-    relative_branch(6 downto 0) when (carry = '0' and zero ='0') and opcode = "0111" else --BLT
+    relative_branch(6 downto 0) when carry = '1' and opcode = "0111" else --BLT
     instr_jump when opcode = "0101" else --JMP
     current_addr + 1 when state="10" else --NEXT
     current_addr; 
