@@ -24,6 +24,9 @@ ghdl -e rom
 ghdl -a bank8reg/bank8reg.vhd
 ghdl -e bank8reg
 
+ghdl -a ram/ram.vhd
+ghdl -e ram
+
 ghdl -a processador.vhd
 ghdl -e processador
 

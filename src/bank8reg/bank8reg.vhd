@@ -3,10 +3,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity bank8reg is
-    port(read_register : in unsigned(2 downto 0);
+    port(read_register1,read_register2 : in unsigned(2 downto 0);
          write_register : in unsigned(2 downto 0);
          write_data     : in unsigned(15 downto 0);
-         read_data     : out unsigned(15 downto 0);
+         read_data1, read_data2: out unsigned(15 downto 0);
          clk            : in std_logic;
          rst            : in std_logic;
          wr_en          : in std_logic
@@ -34,15 +34,25 @@ architecture a_bank8reg of bank8reg is
     
     begin
 
-        read_data <= data_out_0 when read_register = "000" else
-                     data_out_1 when read_register = "001" else
-                     data_out_2 when read_register = "010" else
-                     data_out_3 when read_register = "011" else
-                     data_out_4 when read_register = "100" else
-                     data_out_5 when read_register = "101" else
-                     data_out_6 when read_register = "110" else
-                     data_out_7 when read_register = "111" else
+        read_data1 <= data_out_0 when read_register1 = "000" else
+                     data_out_1 when read_register1 = "001" else
+                     data_out_2 when read_register1 = "010" else
+                     data_out_3 when read_register1 = "011" else
+                     data_out_4 when read_register1 = "100" else
+                     data_out_5 when read_register1 = "101" else
+                     data_out_6 when read_register1 = "110" else
+                     data_out_7 when read_register1 = "111" else
                      "0000000000000000";
+
+        read_data2 <= data_out_0 when read_register2 = "000" else
+                     data_out_1 when read_register2 = "001" else
+                     data_out_2 when read_register2 = "010" else
+                     data_out_3 when read_register2 = "011" else
+                     data_out_4 when read_register2 = "100" else
+                     data_out_5 when read_register2 = "101" else
+                     data_out_6 when read_register2 = "110" else
+                     data_out_7 when read_register2 = "111" else
+                     "0000000000000000";           
         
         wr_en_1 <= '1' when write_register="001" and wr_en='1' else
             '0';
