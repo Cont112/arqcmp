@@ -46,8 +46,6 @@ architecture a_rom of rom is
       30 => B"0100_011_111111110", --LD R3, FFE
       31 => B"1100_011_110_000000", -- SW R3, (R6)
 
-
-
  
       others => (others=>'0')
    );

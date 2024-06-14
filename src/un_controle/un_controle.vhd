@@ -48,8 +48,7 @@ begin
 
     fetch_clk <= '1' when estado="00" else '0';
     decode_clk <= '1' when estado="01" else '0';
-    memory_clk <= '1' when estado="10" else '0';
-    execute_clk <= '1' when estado="11" else '0';
+    execute_clk <= '1' when estado="10" else '0';
 
     opcode <= instruction(15 downto 12);
     imm <= instruction(8 downto 0);
@@ -123,9 +122,9 @@ begin
         "10" when opcode="1011" else --LW
         "00";
 
-    ram_sel <= '1' when estado="01" and opcode="1100" else
-        '1' when estado="01" and opcode="1101" else
-        '0';
+    --ram_sel <= '1' when estado="01" and opcode="1100" else
+      --  '1' when estado="01" and opcode="1101" else
+       -- '0';
 
     jmp_en <= '1' when opcode="0101" else --JMP
         '0';
