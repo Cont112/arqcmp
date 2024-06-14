@@ -64,21 +64,29 @@ architecture a_processador of processador is
     
     
     component un_controle is 
-    port(instr_in: in unsigned(15 downto 0); --Instrucao de 16 bits
-        current_addr : in unsigned (6 downto 0); -- Endereco atual
-        next_addr: out unsigned (6 downto 0); -- Proximo endereco
-        state: in unsigned(1 downto 0);    --Estado atual
+    port(instruction: in unsigned(15 downto 0); --Instrucao a ser executada
+        current_addr: in unsigned(6 downto 0); --Endereco atual
+        next_addr: out unsigned(6 downto 0); --Proximo endereco
 
-        sel_ula: out std_logic; --Selecao de entrada da ULA
-        ula_op: out unsigned(1 downto 0);   -- Operacao ULA
-        reg_src, reg_dist: out unsigned(2 downto 0);  --Registradores de origem e destino (os dois podem ser o acumulador)
-        imediato: out unsigned(15 downto 0); -- Imediato extendido
-        wr_en_reg, wr_en_acu: out std_logic;
-        wr_en_flags: out std_logic;
-        sel_reg: out std_logic;
-        sel_acu: out unsigned(1 downto 0);
-        zero, carry, negative: in std_logic; --Flag zero e carry
-        clk,rst : in std_logic --Clocks
+        fetch_clk, decode_clk, execute_clk, memory_clk: out std_logic; --Sinais de controle
+        wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu: out std_logic; --Sinais de controle
+
+        ula_op: out unsigned(1 downto 0); --Operacao da ULA
+        ula_sel: out std_logic; --Selecao entrada da ULA (imediato ou registrador)
+
+        acu_sel: out unsigned(1 downto 0); --Selecao entrada do acumulador
+
+        reg_wr: out unsigned(2 downto 0); --Registrador a ser escrito
+        reg_read1, reg_read2: out unsigned(2 downto 0); --Registradores a serem lidos
+        reg_data_sel: out unsigned(1 downto 0); --Selecao dado a ser escrito no registrador (saida do acumulador, ram, imediato)
+
+        imediato: out unsigned(15 downto 0); --Imediato extendido
+
+        ram_addr: out unsigned(6 downto 0);
+
+        zero, carry, negative: in std_logic; --Flags
+
+        clk, rst : in std_logic
     );
     end component;
     
@@ -105,78 +113,85 @@ architecture a_processador of processador is
       );
     end component;
 
-    signal wr_en_acu, sel_reg,wr_en_reg,wr_en_flag, wr_en_ram: std_logic;
-
-    signal ulaOP: unsigned (1 downto 0);
-    signal sel_acu: unsigned(1 downto 0);
+    --Unidade de Controle
+    signal fetch_clk, decode_clk, execute_clk, memory_clk : std_logic;
+    signal wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu : std_logic;
     signal ula_sel: std_logic;
+    signal reg_data_sel, ula_op, acu_sel : unsigned(1 downto 0);
+    signal reg_wr : unsigned(2 downto 0);
+    signal reg_read1, reg_read2 : unsigned(2 downto 0);
+    signal imediato : unsigned(15 downto 0);
+    --Pc
+    signal pc_in, current_addr : unsigned(6 downto 0);
 
-    signal zero, carry,negative: std_logic;
-    signal zero_d, carry_d, negative_d: std_logic;
+    --Flags
+    signal zero_flag, carry_flag, negative_flag : std_logic;
 
-    signal current_addr, next_addr : unsigned(6 downto 0);
-    signal instr_reg_in, instr_reg_out : unsigned(15 downto 0);
+    --Rom
+    signal rom_data, instruction : unsigned(15 downto 0);
 
-    signal state_out : unsigned(1 downto 0);
+    --Ram
+    signal ram_data : unsigned(15 downto 0);
+    signal ram_addr: unsigned(6 downto 0 );
 
-    signal reg_src, reg_dist : unsigned(2 downto 0);
-    signal imediato, reg_data_in,reg_data_out, acu_in, acu_out, ula_saida, ula_entrada: unsigned(15 downto 0);
+    --Banco de Registradores
+    signal data_in, data_out : unsigned(15 downto 0);
+    signal read_reg : unsigned(2 downto 0);
 
-    signal clk_fetch, clk_execute, clk_decode: std_logic;
+    --Acumulador
+    signal acu_in, acu_out: unsigned(15 downto 0);
 
+    --ULA
+    signal ula_carry, ula_zero, ula_negative: std_logic;
+    signal ula_saida, ula_entrada: unsigned(15 downto 0);
     
     begin
+        --Unidade de Controle
+        uc: un_controle port map (instruction, current_addr, pc_in, fetch_clk, decode_clk, execute_clk, memory_clk,
+         wr_en_ram, wr_en_flags, wr_en_reg, wr_en_acu, ula_op, ula_sel, acu_sel, reg_wr, reg_read1, reg_read2, reg_data_sel,
+          imediato, ram_addr, zero_flag, carry_flag, negative_flag, clk, rst);
 
-        maq: maq_estados port map(clk=>clk, rst=>rst, estado=>state_out);
+        --Flags
+        zero : reg1bit port map (clk => execute_clk, rst => rst, wr_en => wr_en_flags, data_in => ula_zero, data_out => zero_flag);
+        carry : reg1bit port map (clk => execute_clk, rst => rst, wr_en => wr_en_flags, data_in => ula_carry, data_out => carry_flag);
+        negative : reg1bit port map (clk => execute_clk, rst => rst, wr_en => wr_en_flags, data_in => ula_negative, data_out => negative_flag);
 
-        pc1: reg7bits port map(clk=>clk_execute, rst=>rst, wr_en=>'1', data_in=>next_addr, data_out=>current_addr);
+        --Rom e Registrador de Instrucoes
+        rom1: rom port map (clk => fetch_clk, endereco => current_addr, dado => rom_data);
+        ir: reg16bits port map (clk => decode_clk, rst => rst, wr_en => '1', data_in => rom_data, data_out => instruction);
 
-        rom1: rom port map (clk=>clk_fetch, endereco=>current_addr, dado=>instr_reg_in);
+        --Pc
+        pc: reg7bits port map (clk => execute_clk, rst => rst, wr_en => '1', data_in => pc_in, data_out => current_addr);
 
-        instr_reg1: reg16bits port map(clk=>clk_decode, rst=>rst, wr_en=>'1', data_in=>instr_reg_in, data_out=>instr_reg_out);
+        --Ram
+        ram1: ram port map (clk => memory_clk, endereco => ram_addr, wr_en => wr_en_ram, dado_in =>data_out, dado_out => ram_data);
 
-        uc1: un_controle port map (clk=>clk_execute, rst=>rst, instr_in=>instr_reg_out, current_addr=>current_addr, next_addr=>next_addr,
-                                 state=>state_out,sel_ula=>ula_sel ,ula_op=>ulaOP, reg_src=>reg_src, reg_dist=>reg_dist, imediato=>imediato, 
-                                 wr_en_reg=>wr_en_reg, wr_en_acu=>wr_en_acu, wr_en_flags => wr_en_flag,sel_reg=>sel_reg, sel_acu=>sel_acu,
-                                  zero=>zero_d, carry=>carry_d, negative=>negative_d);
-
-        banco_registradores1: bank8reg port map(clk=>clk_execute, rst=>rst, wr_en=> wr_en_reg, read_register=>reg_src, write_register=>reg_dist,
-                             write_data=>reg_data_in, read_data=>reg_data_out);
-
-        acumulador1: reg16bits port map(clk=>clk_execute, rst=>rst, wr_en=>wr_en_acu, data_in=>acu_in, data_out=>acu_out);
+        --Banco de Registradores
+        data_in <= acu_out when reg_data_sel = "00" else
+            imediato when reg_data_sel = "01" else
+            ram_data when reg_data_sel = "10" else
+            "0000000000000000"; 
         
-        ula1: ula port map(A=>acu_out, B=>ula_entrada, ulaOP=>ulaOP, saida=>ula_saida, carry=>carry, negative=>negative, zero=>zero);
+        read_reg <= reg_read1;
+        bank: bank8reg port map (read_register => read_reg, write_register => reg_wr, write_data => data_in, read_data => data_out, clk => execute_clk, rst => rst, wr_en => wr_en_reg);
 
-        reg_carry: reg1bit port map(clk=>clk_execute, rst=>rst, wr_en=>wr_en_flag, data_in=>carry, data_out=>carry_d); --CLK TA CERTO??
+        --Acumulador
+        acu_in <= ula_saida when acu_sel = "00" else
+            data_out when acu_sel = "01" else
+            imediato when acu_sel = "11" else
+            "0000000000000000";
+        acu1: reg16bits port map (clk => execute_clk, rst => rst, wr_en => wr_en_acu, data_in => acu_in, data_out => acu_out);
 
-        reg_zero: reg1bit port map(clk=>clk_execute, rst=>rst, wr_en=>wr_en_flag, data_in=>zero, data_out=>zero_d); --CLK TA CERTO??
+        --ULA
+        ula_entrada <= data_out when ula_sel = '0' else
+            imediato when ula_sel='1';
 
-        reg_negative: reg1bit port map(clk=>clk_execute, rst=>rst, wr_en=>wr_en_flag, data_in=>negative, data_out=>negative_d); --CLK TA CERTO??
+        ula1: ula port map (A => ula_entrada , B => acu_out, ulaOP => ula_op, saida => ula_saida, carry => ula_carry, negative => ula_negative, zero => ula_zero);
 
-
-
-        acu_in <= ula_saida when sel_acu="00" else      --MUX ENTRADA DO ACUMULADOR
-                  reg_data_out when sel_acu="01" else   --ESCOLHHA ENTRE IMEDIATO, REGISTRADOR E SAIDA DA ULA
-                  imediato when sel_acu="10" else
-                  "0000000000000000";
-
-        reg_data_in <= imediato when sel_reg='0' else   --MUX ENTRADA DE DADOS DO BANCO 
-                        acu_out when sel_reg='1' else   --ESCOLHA ENTRE IMEDIATO E ACUMULADOR
-                        "0000000000000000";           
-
-        ula_entrada <= reg_data_out when ula_sel='0' else
-                        imediato when ula_sel='1' else
-                        "0000000000000000";
-
-        clk_fetch <= '1' when state_out = "00" else '0';
-        clk_decode <= '1' when state_out = "01" else '0';
-        clk_execute <= '1' when state_out = "10" else '0';
-
-
-        reg<=reg_data_out;
+        reg<=data_out;
         acu<=acu_out;
         ula_out<=ula_saida;
         instr_pc<=current_addr;
-        instr_reg<=instr_reg_out;
-        estado_out<=state_out;
+        instr_reg<=instruction;
+
 end architecture;
