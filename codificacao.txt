@@ -10,10 +10,10 @@ JPB:    0110 fff xrrrrrrrr
 ADD:    0111 sss xxxxxxxxx
 SUB:    1000 sss xxxxxxxxx
 SUBI:   1001 xxx ccccccccc
+(SUBB)
 CMP:    1010 sss xxxxxxxxx
 LW:     1011 ddd eeexxxxxx
 SW:     1100 sss eeexxxxxx
-LU:     1101 ddd iiiiiiiii
 
 Onde:
      a        identifica o acumulador.
@@ -26,24 +26,7 @@ Onde:
      e        identifica o endereco na ram.
 
 Registradores de flags e tabela de condicoes:
-
     BEQ -> 000 (fff na instrucao) 
     BLT -> 001
     BGT -> 010
     BNE -> 011
-
-
-NOP
-MOV A,R
-MOV R,A
-LD  A,I
-LD  R,I
-JMP I
-JPB F,D
-ADD R
-SUB R
-SUBI I
-SUBB 
-LW
-SW
-LU

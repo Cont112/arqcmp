@@ -13,3 +13,31 @@ LAB6- condicionais
       11 => B"0001_100_000000000", --MOV A,R4
       12 => B"0010_101_000000000", --MOV R5,A
       13 => B"0000_000_000000000", --NOP
+
+LAB7 -Ram
+
+      LD R1, 0x3F;
+      LD R2, 0x16;
+      LD R3, 0x27;
+      LD R4, 0x07;
+      LD R5, 0x3D;
+      LD R6, 0x02;
+      NOP;
+      LD R7, 0X01;
+      NOP;
+      SW R2, (R1);
+      SW R3, (R4);
+      LD R4, 0x0C;
+      SW R1, (R4);
+      LD R4, 0x02;
+      SW R6, (R4);
+      LD R4, 0x03;
+      SW R7, (R4);
+      NOP;
+      LD R1, 0;
+      NOP;
+      SW R4, (R4);
+      LD R6, 0x0A;
+      LW R2, (R6);
+      LD R3, 0xFFE;
+      SW R4, (R6)
