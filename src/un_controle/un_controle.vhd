@@ -68,7 +68,7 @@ begin
         "000"; --(SUBB)
 
     relative_addr <= ('0' & current_addr) + imm(7 downto 0); --Endereco relativo
-    imediato <= "0000000" & imm when imm(8)='0' else "11111111" & imm when imm(8)='1'; --Extensao de sinal
+    imediato <= "0000000" & imm when imm(8)='0' else "1111111" & imm when imm(8)='1'; --Extensao de sinal
     
     --controle de escrita na memoria
     wr_en_ram <= '1' when opcode="1100" else --SW

@@ -16,14 +16,14 @@ end entity;
 
 architecture a_processador of processador is
     component bank8reg is
-        port(read_register : in unsigned(2 downto 0);
-            write_register : in unsigned(2 downto 0);
-            write_data     : in unsigned(15 downto 0);
-            read_data      : out unsigned(15 downto 0);
-            clk            : in std_logic;
-            rst            : in std_logic;
-            wr_en          : in std_logic
-        );
+        port(read_register1,read_register2 : in unsigned(2 downto 0);
+        write_register : in unsigned(2 downto 0);
+        write_data     : in unsigned(15 downto 0);
+        read_data1, read_data2: out unsigned(15 downto 0);
+        clk            : in std_logic;
+        rst            : in std_logic;
+        wr_en          : in std_logic
+   );
     end component;
 
     component ula is
@@ -133,7 +133,7 @@ architecture a_processador of processador is
     signal ram_addr: unsigned(15 downto 0 );
     signal ram_sel : std_logic;
     --Banco de Registradores
-    signal data_in, data_out : unsigned(15 downto 0);
+    signal data_in, data_out, data_out2: unsigned(15 downto 0);
     signal read_reg : unsigned(2 downto 0);
 
     --Acumulador
@@ -164,8 +164,7 @@ architecture a_processador of processador is
         pc: reg7bits port map (clk => execute_clk, rst => rst, wr_en => '1', data_in => pc_in, data_out => current_addr);
 
         --Ram
-        raddr: reg16bits port map (clk => memory_clk,rst => rst, wr_en => wr_en_raddr, data_in => data_out , data_out => ram_addr);
-        ram1: ram port map (clk => execute_clk, wr_en=>wr_en_ram, endereco => ram_addr(6 downto 0), dado_in => data_out, dado_out => ram_data);
+        ram1: ram port map (clk => execute_clk, wr_en=>wr_en_ram, endereco => data_out2(6 downto 0), dado_in => data_out, dado_out => ram_data);
 
         --Banco de Registradores
         data_in <= acu_out when reg_data_sel = "00" else
@@ -173,10 +172,11 @@ architecture a_processador of processador is
             ram_data when reg_data_sel = "10" else
             "0000000000000000"; 
         
-        read_reg <= reg_read2 when ram_sel='1' else 
-        reg_read1;
-        bank: bank8reg port map (read_register => read_reg, write_register => reg_wr, write_data => data_in,
-        read_data => data_out, clk => execute_clk, rst => rst, wr_en => wr_en_reg);
+
+
+        
+        bank: bank8reg port map (read_register1 => reg_read1, read_register2 => reg_read2, write_register => reg_wr, write_data => data_in,
+        read_data1 => data_out, read_data2 => data_out2,clk => execute_clk, rst => rst, wr_en => wr_en_reg);
 
         --Acumulador
         acu_in <= ula_saida when acu_sel = "00" else
