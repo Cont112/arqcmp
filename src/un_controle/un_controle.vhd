@@ -93,6 +93,7 @@ begin
 
     --controle de escrita no acumulador
     wr_en_acu <= '1' when opcode="0111" else --ADD
+        '1' when opcode="1101" else --CTZ
         '1' when opcode="1000" else --SUB
         '1' when opcode="0001" else --MOV
         '1' when opcode="0011" else --LD
@@ -104,6 +105,7 @@ begin
         "01" when opcode="1000" else --SUB
         "01" when opcode="1001" else --SUBI
         "01" when opcode="1010" else --CMP
+        "11" when opcode="1101" else --CTZ
         "00"; --(SUBB)
 
     --mux de entrada da ula
@@ -112,6 +114,7 @@ begin
 
     --mux de entrada do acumulador
     acu_sel <= "00" when opcode="0111" else --ADD
+        "00" when opcode="1101" else --CTZ
         "00" when opcode="1000" else --SUB
         "00" when opcode="1001" else --SUBI (SUBB)
         "01" when opcode="0001" else --MOV

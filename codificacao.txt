@@ -10,10 +10,11 @@ JPB:    0110 fff xrrrrrrrr
 ADD:    0111 sss xxxxxxxxx
 SUB:    1000 sss xxxxxxxxx
 SUBI:   1001 xxx ccccccccc
-(SUBB)
 CMP:    1010 sss xxxxxxxxx
 LW:     1011 ddd eeexxxxxx
 SW:     1100 sss eeexxxxxx
+CTZ:    1101 ddd xxxxxxxxx
+SUBB:   1110
 
 Onde:
      a        identifica o acumulador.

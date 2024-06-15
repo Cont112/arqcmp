@@ -13,7 +13,8 @@ entity ula is
 end ula;
 
 architecture a_ula of ula is
-    signal soma,subt,xor_gate,saidaTemp : unsigned(15 downto 0);
+    signal soma,subt,xor_gate,saidaTemp: unsigned(15 downto 0);
+    signal ctz: unsigned(4 downto 0);
     --signal multi32 : unsigned(31 downto 0);
     signal x17, y17, soma17,sub17: unsigned(16 downto 0);
     begin
@@ -32,10 +33,28 @@ architecture a_ula of ula is
 
     xor_gate<= A xor B;
 
+    ctz <= "10000" when A(15 downto 0) = "0000000000000000" else
+    "01111" when A(14 downto 0) = "000000000000000" else
+    "01110" when A(13 downto 0) = "00000000000000" else
+    "01101" when A(12 downto 0) = "0000000000000" else
+    "01100" when A(11 downto 0) = "000000000000" else
+    "01011" when A(10 downto 0) = "00000000000" else
+    "01010" when A(9 downto 0) = "0000000000" else
+    "01001" when A(8 downto 0) = "000000000" else
+    "01000" when A(7 downto 0) = "00000000" else
+    "00111" when A(6 downto 0) = "0000000" else
+    "00110" when A(5 downto 0) = "000000" else
+    "00101" when A(4 downto 0) = "00000" else
+    "00100" when A(3 downto 0) = "0000" else
+    "00011" when A(2 downto 0) = "000" else
+    "00010" when A(1 downto 0) = "00" else
+    "00001" when A(0) = '0' else
+    "00000";
+
     saidaTemp <= soma when ulaOP = "00" else
              subt when ulaOP = "01" else
              xor_gate when ulaOP = "10" else 
-             B when ulaOP = "11" else --Caso de Load?
+             ("00000000000" & ctz) when ulaOP = "11" else
              "0000000000000000";
     
 
