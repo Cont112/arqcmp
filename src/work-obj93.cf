@@ -1,37 +1,37 @@
 v 4
-file . "processador.vhd" "35df90339a734fec7e331ba8e1cb376accee362d" "20240615191709.848":
-  entity processador at 1( 0) + 0 on 3213;
-  architecture a_processador of processador at 17( 594) + 0 on 3214;
-file . "rom/rom.vhd" "8c061fd3194917800c1d341953d29f10200497cb" "20240615191709.789":
-  entity rom at 1( 0) + 0 on 3207;
-  architecture a_rom of rom at 10( 227) + 0 on 3208;
-file . "maq_estados/maq_estados.vhd" "a6322ac83d60d9bec0a77b82358cd06f03498ee7" "20240615191709.749":
-  entity maq_estados at 1( 0) + 0 on 3203;
-  architecture a_maq_estados of maq_estados at 9( 183) + 0 on 3204;
-file . "reg/reg7bits.vhd" "45d214c739eab0fd131340f768630f0bc1a97039" "20240615191709.710":
-  entity reg7bits at 1( 0) + 0 on 3199;
-  architecture a_reg7bits of reg7bits at 14( 286) + 0 on 3200;
-file . "reg/reg1bit.vhd" "e796f64c7f19cd4ad2770c66a22f718d1d2cb982" "20240615191709.669":
-  entity reg1bit at 1( 0) + 0 on 3195;
-  architecture a_reg1bit of reg1bit at 14( 263) + 0 on 3196;
-file . "reg/reg16bits.vhd" "928439c6cf5915fad5dafc2cb34efd31e9f55857" "20240615191709.689":
-  entity reg16bits at 1( 0) + 0 on 3197;
-  architecture a_reg16bits of reg16bits at 14( 289) + 0 on 3198;
-file . "ula/ula.vhd" "cd6a6ccbc3ba0c09e7084ef464531c940fb18fe7" "20240615191709.729":
-  entity ula at 1( 0) + 0 on 3201;
-  architecture a_ula of ula at 15( 405) + 0 on 3202;
-file . "un_controle/un_controle.vhd" "23f5baafefd2b90ee8ba8042096a77b3d7cde86f" "20240615191709.768":
-  entity un_controle at 1( 0) + 0 on 3205;
-  architecture a_un_controle of un_controle at 30( 1181) + 0 on 3206;
-file . "bank8reg/bank8reg.vhd" "8b57762aa4137b8698e9dc49ae6d23479a566f37" "20240615191709.808":
-  entity bank8reg at 1( 0) + 0 on 3209;
-  architecture a_bank8reg of bank8reg at 16( 457) + 0 on 3210;
-file . "processador_tb.vhd" "ce53cece091014c8d8d016b8e1608ace42c67ced" "20240615191709.875":
-  entity processador_tb at 1( 0) + 0 on 3215;
-  architecture a_processador_tb of processador_tb at 8( 108) + 0 on 3216;
-file . "ram/ram.vhd" "fcd70ff4556dd2538da1b7a296ea48b5cabfaed6" "20240615191709.829":
-  entity ram at 1( 0) + 0 on 3211;
-  architecture a_ram of ram at 15( 463) + 0 on 3212;
 file . "ula/ula_tb.vhd" "0b6061621a973eff752b998ad69e40c0302e392b" "20240615152347.596":
   entity ula_tb at 1( 0) + 0 on 2761;
   architecture a_ula_tb of ula_tb at 10( 102) + 0 on 2762;
+file . "ram/ram.vhd" "fcd70ff4556dd2538da1b7a296ea48b5cabfaed6" "20240618222531.465":
+  entity ram at 1( 0) + 0 on 3485;
+  architecture a_ram of ram at 15( 463) + 0 on 3486;
+file . "processador_tb.vhd" "ce53cece091014c8d8d016b8e1608ace42c67ced" "20240618222531.512":
+  entity processador_tb at 1( 0) + 0 on 3489;
+  architecture a_processador_tb of processador_tb at 8( 108) + 0 on 3490;
+file . "bank8reg/bank8reg.vhd" "8b57762aa4137b8698e9dc49ae6d23479a566f37" "20240618222531.440":
+  entity bank8reg at 1( 0) + 0 on 3483;
+  architecture a_bank8reg of bank8reg at 16( 457) + 0 on 3484;
+file . "un_controle/un_controle.vhd" "0d7c9dc2ee6508d86322105e454354b5357d7b4b" "20240618222531.400":
+  entity un_controle at 1( 0) + 0 on 3479;
+  architecture a_un_controle of un_controle at 30( 1181) + 0 on 3480;
+file . "ula/ula.vhd" "1f61dddcbbc7c00023866824b8d23b73a5a30664" "20240618222531.359":
+  entity ula at 1( 0) + 0 on 3475;
+  architecture a_ula of ula at 16( 443) + 0 on 3476;
+file . "reg/reg16bits.vhd" "928439c6cf5915fad5dafc2cb34efd31e9f55857" "20240618222531.307":
+  entity reg16bits at 1( 0) + 0 on 3471;
+  architecture a_reg16bits of reg16bits at 14( 289) + 0 on 3472;
+file . "reg/reg1bit.vhd" "e796f64c7f19cd4ad2770c66a22f718d1d2cb982" "20240618222531.286":
+  entity reg1bit at 1( 0) + 0 on 3469;
+  architecture a_reg1bit of reg1bit at 14( 263) + 0 on 3470;
+file . "reg/reg7bits.vhd" "45d214c739eab0fd131340f768630f0bc1a97039" "20240618222531.332":
+  entity reg7bits at 1( 0) + 0 on 3473;
+  architecture a_reg7bits of reg7bits at 14( 286) + 0 on 3474;
+file . "maq_estados/maq_estados.vhd" "a6322ac83d60d9bec0a77b82358cd06f03498ee7" "20240618222531.380":
+  entity maq_estados at 1( 0) + 0 on 3477;
+  architecture a_maq_estados of maq_estados at 9( 183) + 0 on 3478;
+file . "rom/rom.vhd" "e5cf33d11f0873fcf4448acc4cbd33645a52d5b3" "20240618222531.421":
+  entity rom at 1( 0) + 0 on 3481;
+  architecture a_rom of rom at 10( 227) + 0 on 3482;
+file . "processador.vhd" "3ad0b8ab5e40ae22c7d56d2e93d07ec8a1280c8d" "20240618222531.486":
+  entity processador at 1( 0) + 0 on 3487;
+  architecture a_processador of processador at 17( 594) + 0 on 3488;

@@ -29,11 +29,12 @@ architecture a_processador of processador is
     component ula is
         port(   A, B : in unsigned(15 downto 0); --Entrada da ula onde B sempre é o acumulador.
         ulaOP    : in unsigned(1 downto 0);
+        borrow_in: in std_logic;
         saida    : out unsigned(15 downto 0);
         carry    : out std_logic;
         negative : out std_logic;
         zero     : out std_logic
-    );
+);
     end component;
 
     component reg1bit is -- REG PARA AS FLAGS
@@ -189,7 +190,7 @@ architecture a_processador of processador is
         ula_entrada <= data_out when ula_sel = '0' else
             imediato when ula_sel='1';
 
-        ula1: ula port map (A => ula_entrada , B => acu_out, ulaOP => ula_op, saida => ula_saida, carry => ula_carry, negative => ula_negative, zero => ula_zero);
+        ula1: ula port map (A => ula_entrada , B => acu_out, borrow_in => carry_flag, ulaOP => ula_op, saida => ula_saida, carry => ula_carry, negative => ula_negative, zero => ula_zero);
 
         reg<=data_out;
         acu<=acu_out;

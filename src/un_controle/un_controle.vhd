@@ -63,7 +63,6 @@ begin
     reg_wr <= instruction(11 downto 9) when opcode="0010" else --MOV
         instruction(11 downto 9) when opcode="0100" else --LD
         instruction(11 downto 9) when opcode="1011" else --LW
-        instruction(11 downto 9) when opcode="1101" else --LU
         "000"; --(SUBB)
 
     relative_addr <= ('0' & current_addr) + imm(7 downto 0); --Endereco relativo
@@ -81,6 +80,7 @@ begin
     wr_en_flags <= '1' when opcode="0111" else --ADD
         '1' when opcode="1000" else --SUB
         '1' when opcode="1001" else --SUBI
+        '1' when opcode="1110" else --SUBB
         '1' when opcode="1010" else --CMP
         '0'; --(SUBB)
 
@@ -88,7 +88,6 @@ begin
     wr_en_reg <= '1' when opcode="0010" else--MOV
         '1' when opcode="0100" else --LD
         '1' when opcode="1011" else --LW
-        '1' when opcode="1101" else --Lu
         '0';
 
     --controle de escrita no acumulador
@@ -98,12 +97,14 @@ begin
         '1' when opcode="0001" else --MOV
         '1' when opcode="0011" else --LD
         '1' when opcode="1001" else --SUBI
-        '0'; --(SUBB)
+        '1' when opcode="1110" else --SUBB
+        '0';
 
     --operacao da ula
     ula_op <= "00" when opcode="0111" else --ADD
         "01" when opcode="1000" else --SUB
         "01" when opcode="1001" else --SUBI
+        "10" when opcode="1110" else --SUBB
         "01" when opcode="1010" else --CMP
         "11" when opcode="1101" else --CTZ
         "00"; --(SUBB)
@@ -116,7 +117,8 @@ begin
     acu_sel <= "00" when opcode="0111" else --ADD
         "00" when opcode="1101" else --CTZ
         "00" when opcode="1000" else --SUB
-        "00" when opcode="1001" else --SUBI (SUBB)
+        "00" when opcode="1001" else --SUBI
+        "00" when opcode="1110" else --SUBB
         "01" when opcode="0001" else --MOV
         "10" when opcode="0011" else --LD
         "00";

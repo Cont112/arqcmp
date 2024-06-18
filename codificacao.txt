@@ -13,8 +13,8 @@ SUBI:   1001 xxx ccccccccc
 CMP:    1010 sss xxxxxxxxx
 LW:     1011 ddd eeexxxxxx
 SW:     1100 sss eeexxxxxx
-CTZ:    1101 ddd xxxxxxxxx
-SUBB:   1110
+CTZ:    1101 sss xxxxxxxxx
+SUBB:   1110 sss xxxxxxxxx
 
 Onde:
      a        identifica o acumulador.

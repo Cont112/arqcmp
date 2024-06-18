@@ -5,6 +5,7 @@ use ieee.numeric_std.all;
 entity ula is
     port(   A, B : in unsigned(15 downto 0); --Entrada da ula onde B sempre é o acumulador.
             ulaOP    : in unsigned(1 downto 0);
+            borrow_in : in std_logic;
             saida    : out unsigned(15 downto 0);
             carry    : out std_logic;
             negative : out std_logic;
@@ -13,10 +14,11 @@ entity ula is
 end ula;
 
 architecture a_ula of ula is
-    signal soma,subt,xor_gate,saidaTemp: unsigned(15 downto 0);
+    signal soma,subt,saidaTemp, subb: unsigned(15 downto 0);
     signal ctz: unsigned(4 downto 0);
     --signal multi32 : unsigned(31 downto 0);
     signal x17, y17, soma17,sub17: unsigned(16 downto 0);
+
     begin
 
     x17<= '0' & A;
@@ -27,11 +29,13 @@ architecture a_ula of ula is
     soma<= soma17(15 downto 0);
     subt<= sub17(15 downto 0);
 
+    subb <= A - B - 1 WHEN borrow_in = '1' ELSE
+    A - B;
+
     carry<=soma17(16) when ulaOP = "00" else
            sub17(16) when ulaOP = "01" else
            '0';
 
-    xor_gate<= A xor B;
 
     ctz <= "10000" when A(15 downto 0) = "0000000000000000" else
     "01111" when A(14 downto 0) = "000000000000000" else
@@ -53,7 +57,7 @@ architecture a_ula of ula is
 
     saidaTemp <= soma when ulaOP = "00" else
              subt when ulaOP = "01" else
-             xor_gate when ulaOP = "10" else 
+             subb when ulaOP = "10" else 
              ("00000000000" & ctz) when ulaOP = "11" else
              "0000000000000000";
     

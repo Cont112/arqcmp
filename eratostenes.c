@@ -26,6 +26,8 @@ void crivo(int n){
     if(prime[i])printf("%d ", i);
   }
 
+  free(prime);
+
 }
 
 int main (){
